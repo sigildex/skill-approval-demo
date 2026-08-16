@@ -223,3 +223,5 @@ jobs:
           else
             note "Neither the skill nor its approval record changed."
           fi
+
+# trailing comment: exercising code-owner coverage of the workflow directory
