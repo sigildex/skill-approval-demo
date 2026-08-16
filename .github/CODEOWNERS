@@ -14,6 +14,12 @@
 # This file, so the owner set cannot be edited out from under itself.
 /.github/CODEOWNERS           @sigildex/skill-approvers
 
+# The active skills directory. The workflow watches ONE skill/record pair, so a
+# pull request that adds a new skill directory with no approval record touches
+# nothing the workflow checks — covering the directory here is what makes that
+# pull request need a code-owner review.
+/.claude/skills/**            @sigildex/skill-approvers
+
 # Pre-publication only: the vendored tool tarball. Its digest is pinned in the
 # workflow, so swapping it fails the check; ownership here is belt-and-braces.
 /vendor/**                    @sigildex/skill-approvers

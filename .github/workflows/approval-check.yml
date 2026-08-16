@@ -36,12 +36,17 @@ env:
   # Pre-publication arrangement for this demo only: until sigildex@0.1.0 is on
   # npm, the tool is installed from the tarball vendored under vendor/, and the
   # tarball's digest is pinned HERE, in a workflow file that CODEOWNERS covers.
-  # A pull request can replace vendor/sigildex-0.1.0.tgz, but it cannot change
-  # this digest without a code-owner review, so the program that judges the
-  # pull request is not chosen by the pull request. Once the package is
-  # published, delete these two lines and the "vendored" branch of the install
-  # step below, and install "sigildex@$SIGILDEX_VERSION" from the registry as
-  # the upstream workflow does.
+  # Under `pull_request` this file runs as the pull request writes it, so a
+  # pull request CAN swap the tarball and rewrite this digest together, and
+  # the check on that pull request will be green. What the pin buys is
+  # narrower and still worth having: a change to this line is a change to a
+  # code-owner-covered file, so it cannot MERGE without a code-owner review,
+  # and the reviewer sees the digest change in the diff. A green check on a
+  # pull request that touches this workflow is only as trustworthy as the
+  # workflow diff. Once the package is published, delete these two lines and
+  # the "vendored" branch of the install step below, and install
+  # "sigildex@$SIGILDEX_VERSION" from the registry as the upstream workflow
+  # does (the same caveat applies to SIGILDEX_VERSION itself).
   SIGILDEX_TARBALL: vendor/sigildex-0.1.0.tgz
   SIGILDEX_TARBALL_SHA256: 00f7fe431fa3483f577488435005374e03a85e563075a026508c65b1bbe1c643
 

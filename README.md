@@ -11,7 +11,7 @@ and branch-protection configuration that turns "the record is consistent" into
 | `.claude/skills/log-summarizer/` | A synthetic example skill (written for the Sigildex repository as example content; it describes no real published skill). |
 | `.sigildex/approvals/log-summarizer.lock.json` | Its approval record, written by `sigildex lock`. |
 | `.github/workflows/approval-check.yml` | The Sigildex `approval-check` workflow: fails a pull request whose skill and record disagree. |
-| `.github/CODEOWNERS` | Puts the approvals directory, the workflow directory, and this file itself under a code-owner team. |
+| `.github/CODEOWNERS` | Puts the approvals directory, the workflow directory, the skills directory, and this file itself under a code-owner team. |
 | `vendor/` | Pre-publication only — the packed CLI, digest-pinned in the workflow. Goes away once the package is on npm. |
 
 ## What the repository settings enforce
@@ -42,17 +42,36 @@ the repository refuses to merge without one.
   no CLI can change it. Audit the settings, not just the workflow.
 - The check watches the one skill/record pair named in the workflow's `env`.
   It does not audit the approvals directory for duplicate ids, duplicate
-  artifact paths, or orphaned records.
+  artifact paths, or orphaned records — and a pull request that adds a *new*
+  skill directory with no record touches nothing it checks. That is why
+  `CODEOWNERS` covers `.claude/skills/**` too: without that line, such a pull
+  request would merge on an ordinary review.
+- The workflow file runs as the pull request writes it. A pull request can edit
+  the workflow (or, before publication, swap the vendored tarball and its pinned
+  digest together) and show a green check; what stops it is that those paths
+  need a code-owner review to merge, and the change is visible in the diff. Read
+  the diff of any pull request that touches `.github/`.
 
 ## Trying it
 
 1. Edit `.claude/skills/log-summarizer/SKILL.md` on a branch and open a pull
    request without touching the record → `approval-check` fails: the skill no
    longer matches its approval.
-2. On another branch, edit the skill *and* re-run
-   `sigildex lock .claude/skills/log-summarizer --out .sigildex/approvals/log-summarizer.lock.json`
+2. On another branch, edit the skill *and* re-record the approval — a re-lock
+   writes a whole new record, so repeat the `--source-*` flags you want kept:
+
+   ```sh
+   sigildex lock .claude/skills/log-summarizer \
+     --out .sigildex/approvals/log-summarizer.lock.json \
+     --source-kind git \
+     --source-repository https://github.com/sigildex/sigildex \
+     --source-path examples/version-drift/skill-v2 \
+     --source-tracking "pinned; example content, no upstream"
+   ```
+
    → the check passes, and the pull request stays blocked on a code-owner review.
-3. Have a code owner who is not the author approve → mergeable.
+3. A member of the code-owner team who is not the author approves → mergeable.
+   (The team needs at least two people for this step to be possible.)
 
 Sigildex records byte identity only. It does not attest safety, provenance, or
 future content. See the Sigildex repository for the identity specification, the
