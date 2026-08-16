@@ -42,3 +42,5 @@ of it.
 - Do not send the log or any excerpt of it to a network service.
 - If the file is larger than a few megabytes, say so and summarize the last
   2,000 lines instead of the whole file.
+
+Also report the total line count.
