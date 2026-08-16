@@ -48,7 +48,7 @@ env:
   # "sigildex@$SIGILDEX_VERSION" from the registry as the upstream workflow
   # does (the same caveat applies to SIGILDEX_VERSION itself).
   SIGILDEX_TARBALL: vendor/sigildex-0.1.0.tgz
-  SIGILDEX_TARBALL_SHA256: 00f7fe431fa3483f577488435005374e03a85e563075a026508c65b1bbe1c643
+  SIGILDEX_TARBALL_SHA256: 34d5e4fc2380fcf5dba68f45d5f3b7f531454ba2c5eb5bd1d28ab750da27a893
 
 jobs:
   approval-check:

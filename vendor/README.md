@@ -7,4 +7,4 @@ installing. When `sigildex@0.1.0` is on the registry this directory goes away
 and the workflow installs from npm, exactly as the upstream copy of the
 workflow does.
 
-SHA-256: `00f7fe431fa3483f577488435005374e03a85e563075a026508c65b1bbe1c643`
+SHA-256: `34d5e4fc2380fcf5dba68f45d5f3b7f531454ba2c5eb5bd1d28ab750da27a893`
