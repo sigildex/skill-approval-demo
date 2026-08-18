@@ -1,7 +1,7 @@
 ---
 name: log-summarizer
 description: Summarize a plain-text application log into a short incident report — error counts, the first and last timestamp seen, and the most frequent messages. Use when someone points at a log file and asks what went wrong.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Log summarizer
@@ -23,18 +23,22 @@ shared — this skill reads only the file it is given.
 2. Identify the timestamp format from the first line that carries one. See
    [reference/log-formats.md](reference/log-formats.md) for the formats this
    skill recognizes.
-3. Count lines by severity (`ERROR`, `WARN`, `INFO`). Report the counts.
+3. Run `scripts/summarize.sh <log-file>` to get the severity counts instead of
+   counting the lines yourself. The script prints one `count severity` pair per
+   line. If it exits non-zero, fall back to counting by reading the file.
 4. Group the `ERROR` lines by their message text with the timestamps and other
-   varying fields removed, and list the three largest groups.
+   varying fields removed, and list the five largest groups.
 5. Report the first and last timestamp observed, so the reader knows the window
    the numbers cover.
+6. Compute the error rate as errors divided by total classified lines, and state
+   it as a percentage with one decimal place.
 
 ## Output
 
-Reply with four short sections, in this order: **Window**, **Counts**,
-**Top errors**, **Notes**. Keep the whole report under 200 words. Quote at most
-one representative log line per error group, and never more than 200 characters
-of it.
+Reply with five short sections, in this order: **Window**, **Counts**,
+**Error rate**, **Top errors**, **Notes**. Keep the whole report under 200
+words. Quote at most one representative log line per error group, and never
+more than 200 characters of it.
 
 ## Limits
 

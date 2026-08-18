@@ -4,12 +4,12 @@
   "tool_version": "0.1.0",
   "approval_id": "log-summarizer",
   "artifact_path": ".claude/skills/log-summarizer",
-  "root_digest": "sha256:d445576462862500bd9537c93fc2390802d97bf3df13879a9b83cc21e04890ad",
+  "root_digest": "sha256:0b0bec0d4e4435beed62b983c530f4f8249e7b1af01d31fbb8be1989d94cf1c6",
   "files": [
     {
       "path": "SKILL.md",
-      "sha256": "ded91c0b3c75add8e6e55652eb81cf7dfb843f8a79900e03a75bcc47d70732a9",
-      "size": 1777,
+      "sha256": "7845139a01644050e936ed23cb8027d5bedf05d97fa8238a5ab92ccd1679be29",
+      "size": 2079,
       "executable": false,
       "class": "instructions"
     },
@@ -19,6 +19,13 @@
       "size": 1075,
       "executable": false,
       "class": "reference"
+    },
+    {
+      "path": "scripts/summarize.sh",
+      "sha256": "c48fb51118b40020690802effcb93a9dacdacd7e510503e47a129b1ca14bb11d",
+      "size": 132,
+      "executable": true,
+      "class": "script"
     }
   ],
   "skill": {
@@ -26,14 +33,14 @@
     "frontmatter": {
       "name": "log-summarizer",
       "description": "Summarize a plain-text application log into a short incident report — error counts, the first and last timestamp seen, and the most frequent messages. Use when someone points at a log file and asks what went wrong.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   },
-  "created_at": "2026-08-16T22:48:08.845Z",
+  "created_at": "2026-08-16T22:50:04.529Z",
   "declared_source": {
     "kind": "git",
     "repository": "https://github.com/sigildex/sigildex",
-    "path": "examples/version-drift/skill-v1",
+    "path": "examples/version-drift/skill-v2",
     "tracking_policy": "pinned; example content, no upstream",
     "verification": "user_supplied"
   },
