@@ -19,7 +19,3 @@
 # nothing the workflow checks — covering the directory here is what makes that
 # pull request need a code-owner review.
 /.claude/skills/**            @sigildex/skill-approvers
-
-# Pre-publication only: the vendored tool tarball. Its digest is pinned in the
-# workflow, so swapping it fails the check; ownership here is belt-and-braces.
-/vendor/**                    @sigildex/skill-approvers

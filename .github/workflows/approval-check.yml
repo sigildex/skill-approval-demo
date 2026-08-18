@@ -33,22 +33,6 @@ env:
   APPROVAL: .sigildex/approvals/log-summarizer.lock.json
   # Pin the tool. Update deliberately, the same way you update any dependency.
   SIGILDEX_VERSION: 0.1.0
-  # Pre-publication arrangement for this demo only: until sigildex@0.1.0 is on
-  # npm, the tool is installed from the tarball vendored under vendor/, and the
-  # tarball's digest is pinned HERE, in a workflow file that CODEOWNERS covers.
-  # Under `pull_request` this file runs as the pull request writes it, so a
-  # pull request CAN swap the tarball and rewrite this digest together, and
-  # the check on that pull request will be green. What the pin buys is
-  # narrower and still worth having: a change to this line is a change to a
-  # code-owner-covered file, so it cannot MERGE without a code-owner review,
-  # and the reviewer sees the digest change in the diff. A green check on a
-  # pull request that touches this workflow is only as trustworthy as the
-  # workflow diff. Once the package is published, delete these two lines and
-  # the "vendored" branch of the install step below, and install
-  # "sigildex@$SIGILDEX_VERSION" from the registry as the upstream workflow
-  # does (the same caveat applies to SIGILDEX_VERSION itself).
-  SIGILDEX_TARBALL: vendor/sigildex-0.1.0.tgz
-  SIGILDEX_TARBALL_SHA256: 34d5e4fc2380fcf5dba68f45d5f3b7f531454ba2c5eb5bd1d28ab750da27a893
 
 jobs:
   approval-check:
@@ -85,12 +69,7 @@ jobs:
           # reading an .npmrc the pull request committed at the workspace root.
           printf '%s\n' '{"name":"sigildex-tool-install","private":true}' > "$TOOL/package.json"
           cd "$TOOL"
-          # Vendored pre-publication build (see the env comment above): the
-          # digest check runs before npm ever opens the tarball.
-          TARBALL="$GITHUB_WORKSPACE/$SIGILDEX_TARBALL"
-          echo "$SIGILDEX_TARBALL_SHA256  $TARBALL" | sha256sum --check --strict \
-            || { echo "::error::$SIGILDEX_TARBALL does not match the digest pinned in this workflow."; exit 1; }
-          npm install --no-save --ignore-scripts --no-audit --no-fund "$TARBALL"
+          npm install --no-save --ignore-scripts --no-audit --no-fund "sigildex@$SIGILDEX_VERSION"
           [ -x "$TOOL/node_modules/.bin/sigildex" ] \
             || { echo "::error::sigildex@$SIGILDEX_VERSION did not install an executable at $TOOL/node_modules/.bin/sigildex."; exit 1; }
 

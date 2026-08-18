@@ -12,7 +12,6 @@ and branch-protection configuration that turns "the record is consistent" into
 | `.sigildex/approvals/log-summarizer.lock.json` | Its approval record, written by `sigildex lock`. |
 | `.github/workflows/approval-check.yml` | The Sigildex `approval-check` workflow: fails a pull request whose skill and record disagree. |
 | `.github/CODEOWNERS` | Puts the approvals directory, the workflow directory, the skills directory, and this file itself under a code-owner team. |
-| `vendor/` | Pre-publication only — the packed CLI, digest-pinned in the workflow. Goes away once the package is on npm. |
 
 ## What the repository settings enforce
 
@@ -40,6 +39,17 @@ the repository refuses to merge without one.
   required review. If someone with admin rights can edit the branch-protection
   rule itself, they can also remove it — that is the platform's trust model, and
   no CLI can change it. Audit the settings, not just the workflow.
+  **This repository has exercised exactly that.** It has a single maintainer, so
+  when `sigildex@0.1.0` was published to npm the switch from a vendored tarball
+  to the registry install (one commit: the workflow's install step, the removal
+  of `vendor/` and its CODEOWNERS line, and this note) could not be merged through the required
+  code-owner review — an author cannot approve their own pull request. An
+  administrator temporarily disabled "enforce for administrators", pushed this
+  one commit to `main`, and re-enabled it immediately; the full protection rule
+  was re-read and compared field-by-field afterwards, and every other change to
+  this repository went through the check. That is the bypass the previous
+  paragraph describes, done in the open. Read the commit history, not just this
+  sentence.
 - The check watches the one skill/record pair named in the workflow's `env`.
   It does not audit the approvals directory for duplicate ids, duplicate
   artifact paths, or orphaned records — and a pull request that adds a *new*
@@ -47,8 +57,7 @@ the repository refuses to merge without one.
   `CODEOWNERS` covers `.claude/skills/**` too: without that line, such a pull
   request would merge on an ordinary review.
 - The workflow file runs as the pull request writes it. A pull request can edit
-  the workflow (or, before publication, swap the vendored tarball and its pinned
-  digest together) and show a green check; what stops it is that those paths
+  the workflow and show a green check; what stops it is that those paths
   need a code-owner review to merge, and the change is visible in the diff. Read
   the diff of any pull request that touches `.github/`.
 
